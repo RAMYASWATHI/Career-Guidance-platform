@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block title %}Skills Development - CAREER GUIDANCE PLATFORM{% endblock %}
+
+{% block content %}
+<section class="section" style="background: linear-gradient(180deg, #f0f4ff 0%, #f8fafc 100%); padding: 48px 0 32px 0; border-bottom: 1px solid var(--border-color);">
+    <div class="container text-center">
+        <span class="badge badge-purple" style="margin-bottom: 8px;"><i class="fas fa-tools"></i> Competency Framework</span>
+        <h1 style="margin-bottom: 10px;">Technical & Soft Skills Framework</h1>
+        <p style="max-width: 680px; margin: 0 auto;">
+            Explore core competencies evaluated by campus recruiters, with actionable guidance and daily practice activities to improve.
+        </p>
+
+        <!-- Tab Selection Buttons -->
+        <div class="tab-nav tabs-container" style="justify-content: center; margin-top: 32px; border-bottom: none;">
+            <button class="btn btn-lg tab-btn active" data-tab="technicalTab" id="tab-technical-btn">
+                <i class="fas fa-code"></i> Technical Skills (10 Core Competencies)
+            </button>
+            <button class="btn btn-lg tab-btn" data-tab="softTab" id="tab-soft-btn">
+                <i class="fas fa-comments"></i> Soft Skills (7 Crucial Traits)
+            </button>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container tabs-container">
+        
+        <!-- Tab 1: Technical Skills -->
+        <div id="technicalTab" class="tab-pane active">
+            <div class="section-header" style="margin-bottom: 24px;">
+                <span class="section-tag">Technical Competence</span>
+                <h2>10 Core Technical Skills</h2>
+                <p>Click on any skill card below to view its importance, how to improve, and practice activities.</p>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                {% for sk in technical_skills %}
+                <div class="accordion-item">
+                    <button class="accordion-header" type="button">
+                        <div style="display: flex; align-items: center; gap: 14px;">
+                            <div style="width: 38px; height: 38px; border-radius: 8px; background: var(--primary-subtle); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.15rem;">
+                                <i class="{{ sk.icon }}"></i>
+                            </div>
+                            <div>
+                                <h3 style="font-size: 1.1rem; margin: 0; color: var(--text-heading);">{{ sk.name }}</h3>
+                                <span style="font-size: 0.8rem; color: var(--text-muted);">Technical Discipline &bull; Core Computing</span>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-down accordion-icon" style="color: var(--text-muted);"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <div style="margin-bottom: 16px;">
+                            <h4 style="font-size: 0.9rem; text-transform: uppercase; color: var(--primary); margin-bottom: 4px;">Explanation:</h4>
+                            <p style="font-size: 0.94rem; color: #334155; line-height: 1.6;">{{ sk.description }}</p>
+                        </div>
+
+                        <div class="grid-3" style="gap: 16px;">
+                            <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px; padding: 14px;">
+                                <strong style="font-size: 0.78rem; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 4px;">
+                                    <i class="fas fa-star text-warning"></i> Importance:
+                                </strong>
+                                <p style="font-size: 0.88rem; color: #475569; margin: 0;">{{ sk.importance }}</p>
+                            </div>
+
+                            <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px; padding: 14px;">
+                                <strong style="font-size: 0.78rem; text-transform: uppercase; color: var(--primary); display: block; margin-bottom: 4px;">
+                                    <i class="fas fa-arrow-up"></i> How to Improve:
+                                </strong>
+                                <p style="font-size: 0.88rem; color: #475569; margin: 0;">{{ sk.how_to_improve }}</p>
+                            </div>
+
+                            <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px; padding: 14px;">
+                                <strong style="font-size: 0.78rem; text-transform: uppercase; color: var(--purple); display: block; margin-bottom: 4px;">
+                                    <i class="fas fa-tasks"></i> Practice Activities:
+                                </strong>
+                                <p style="font-size: 0.88rem; color: #475569; margin: 0;">{{ sk.practice_activities }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Tab 2: Soft Skills -->
+        <div id="softTab" class="tab-pane" style="display: none;">
+            <div class="section-header" style="margin-bottom: 24px;">
+                <span class="section-tag">Interpersonal & Behavioral</span>
+                <h2>7 Vital Soft Skills</h2>
+                <p>Essential professional competencies for acing HR interviews and team collaboration.</p>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                {% for sk in soft_skills %}
+                <div class="accordion-item">
+                    <button class="accordion-header" type="button">
+                        <div style="display: flex; align-items: center; gap: 14px;">
+                            <div style="width: 38px; height: 38px; border-radius: 8px; background: var(--purple-subtle); color: var(--purple); display: flex; align-items: center; justify-content: center; font-size: 1.15rem;">
+                                <i class="{{ sk.icon }}"></i>
+                            </div>
+                            <div>
+                                <h3 style="font-size: 1.1rem; margin: 0; color: var(--text-heading);">{{ sk.name }}</h3>
+                                <span style="font-size: 0.8rem; color: var(--text-muted);">Behavioral &bull; Professional Competency</span>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-down accordion-icon" style="color: var(--text-muted);"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <div style="margin-bottom: 16px;">
+                            <h4 style="font-size: 0.9rem; text-transform: uppercase; color: var(--purple); margin-bottom: 4px;">Explanation:</h4>
+                            <p style="font-size: 0.94rem; color: #334155; line-height: 1.6;">{{ sk.description }}</p>
+                        </div>
+
+                        <div class="grid-3" style="gap: 16px;">
+                            <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px; padding: 14px;">
+                                <strong style="font-size: 0.78rem; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 4px;">
+                                    <i class="fas fa-star text-warning"></i> Importance:
+                                </strong>
+                                <p style="font-size: 0.88rem; color: #475569; margin: 0;">{{ sk.importance }}</p>
+                            </div>
+
+                            <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px; padding: 14px;">
+                                <strong style="font-size: 0.78rem; text-transform: uppercase; color: var(--primary); display: block; margin-bottom: 4px;">
+                                    <i class="fas fa-arrow-up"></i> How to Improve:
+                                </strong>
+                                <p style="font-size: 0.88rem; color: #475569; margin: 0;">{{ sk.how_to_improve }}</p>
+                            </div>
+
+                            <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px; padding: 14px;">
+                                <strong style="font-size: 0.78rem; text-transform: uppercase; color: var(--purple); display: block; margin-bottom: 4px;">
+                                    <i class="fas fa-tasks"></i> Practice Activities:
+                                </strong>
+                                <p style="font-size: 0.88rem; color: #475569; margin: 0;">{{ sk.practice_activities }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            const target = this.getAttribute('data-tab');
+            document.querySelectorAll('.tab-pane').forEach(p => {
+                p.style.display = (p.id === target) ? 'block' : 'none';
+            });
+        });
+    });
+</script>
+{% endblock %}

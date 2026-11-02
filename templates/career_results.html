@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}Assessment Results - {{ assessment.recommended_career }} | CAREER GUIDANCE PLATFORM{% endblock %}
+
+{% block content %}
+<section class="section" style="background: linear-gradient(180deg, #f0f4ff 0%, #f8fafc 100%); padding: 48px 0 32px 0; border-bottom: 1px solid var(--border-color);">
+    <div class="container container-narrow text-center">
+        <span class="badge badge-success" style="margin-bottom: 8px;">
+            <i class="fas fa-check-circle"></i> Assessment Complete
+        </span>
+        <h1 style="margin-bottom: 8px;">Your Recommended Career Track</h1>
+        <p style="max-width: 620px; margin: 0 auto;">
+            Based on your responses, here is the career pathway that best matches your programming interests and problem-solving style.
+        </p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container container-narrow">
+        <!-- Top Featured Match Card -->
+        <div class="card" style="padding: 36px; border: 2px solid var(--primary-border); margin-bottom: 32px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 20px;">
+                <div>
+                    <span style="font-size: 0.8rem; font-weight: 700; color: var(--purple); text-transform: uppercase;">
+                        Top Recommended Role
+                    </span>
+                    <h2 style="font-size: 2.2rem; color: var(--text-heading); margin-top: 4px;">
+                        {{ assessment.recommended_career }}
+                    </h2>
+                </div>
+                {% if match_percent %}
+                <div>
+                    <span class="badge badge-primary" style="font-size: 1rem; padding: 6px 14px;">
+                        <i class="fas fa-star" style="color: #f59e0b;"></i> {{ match_percent }}% Match
+                    </span>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Why this recommendation -->
+            <div style="background: #f8fafc; border-left: 4px solid var(--primary); padding: 16px 20px; border-radius: 0 8px 8px 0; margin-bottom: 24px;">
+                <h4 style="font-size: 1.05rem; margin-bottom: 6px; color: #1e40af;">
+                    <i class="fas fa-info-circle"></i> Why This Path Fits You
+                </h4>
+                <p style="font-size: 0.95rem; color: #334155; line-height: 1.6; margin: 0;">
+                    {{ assessment.match_reason }}
+                </p>
+            </div>
+
+            <!-- Skills Grid -->
+            <div class="grid-2" style="gap: 20px; margin-bottom: 24px;">
+                <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 10px; padding: 18px;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                        <div style="width: 32px; height: 32px; border-radius: 6px; background: var(--primary-subtle); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1rem;">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <h4 style="margin: 0; font-size: 0.98rem;">Required Technical Skills</h4>
+                    </div>
+                    <p style="font-size: 0.92rem; color: var(--text-heading); font-weight: 500; line-height: 1.6; margin: 0;">
+                        {{ assessment.technical_skills }}
+                    </p>
+                </div>
+
+                <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 10px; padding: 18px;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                        <div style="width: 32px; height: 32px; border-radius: 6px; background: var(--purple-subtle); color: var(--purple); display: flex; align-items: center; justify-content: center; font-size: 1rem;">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h4 style="margin: 0; font-size: 0.98rem;">Required Soft Skills</h4>
+                    </div>
+                    <p style="font-size: 0.92rem; color: var(--text-heading); font-weight: 500; line-height: 1.6; margin: 0;">
+                        {{ assessment.soft_skills }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <a href="{{ url_for('career.roadmap_detail', slug=roadmap_slug) }}" class="btn btn-primary btn-lg" id="view-roadmap-cta-btn">
+                    <i class="fas fa-route"></i> Start Learning Roadmap
+                </a>
+                <a href="{{ url_for('student.dashboard') }}" class="btn btn-outline btn-lg" id="back-to-dashboard-btn">
+                    <i class="fas fa-columns"></i> Return to Dashboard
+                </a>
+            </div>
+        </div>
+
+        <!-- Score Breakdown / Runner-up careers -->
+        {% if top_rankings %}
+        <div class="card">
+            <h3 style="font-size: 1.25rem; margin-bottom: 16px;"><i class="fas fa-chart-bar text-purple"></i> Other Closely Matched Pathways</h3>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                {% for item in top_rankings %}
+                    {% if item.career != assessment.recommended_career %}
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <div>
+                            <h4 style="font-size: 0.98rem; margin: 0;">{{ item.career }}</h4>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">{{ item.category }}</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 14px;">
+                            <span class="badge badge-primary">{{ item.match_percent }}% Match</span>
+                            <a href="{{ url_for('career.roadmap_detail', slug=item.roadmap_slug) }}" class="btn btn-outline btn-sm">Explore</a>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

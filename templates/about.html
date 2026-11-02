@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}About Us - CAREER GUIDANCE PLATFORM{% endblock %}
+
+{% block content %}
+<section class="section" style="background: linear-gradient(180deg, #f0f4ff 0%, #f8fafc 100%); padding: 48px 0 36px 0; border-bottom: 1px solid var(--border-color);">
+    <div class="container container-narrow text-center">
+        <span class="badge badge-primary" style="margin-bottom: 8px;"><i class="fas fa-graduation-cap"></i> Academic Capstone Project</span>
+        <h1 style="margin-bottom: 12px;">About CAREER GUIDANCE PLATFORM</h1>
+        <p class="lead" style="font-size: 1.05rem;">
+            "Explore Your Skills, Discover Your Career, Build Your Future."
+        </p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="grid-2" style="align-items: center; gap: 40px;">
+            <div>
+                <span class="section-tag">Project Objective</span>
+                <h2 style="margin: 6px 0 16px 0;">Empowering Students to Overcome Career Uncertainty</h2>
+                <p style="margin-bottom: 14px;">
+                    Many college and final-year students face common hurdles: not knowing which technical track to pursue, confusion over which frameworks to learn, difficulty preparing resumes, and lack of interview preparation.
+                </p>
+                <p style="margin-bottom: 20px;">
+                    CAREER GUIDANCE PLATFORM addresses these problems in one centralized place by combining intelligent career assessments, structured roadmaps, skills development, interview question banks, and fresher job opportunities.
+                </p>
+                
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <div style="display: flex; gap: 12px; align-items: flex-start;">
+                        <i class="fas fa-check-circle" style="color: #10b981; font-size: 1.15rem; margin-top: 3px;"></i>
+                        <div>
+                            <strong style="color: var(--text-heading);">Intelligent Career Assessment</strong>
+                            <p style="font-size: 0.88rem; margin-top: 2px;">Algorithm-backed questionnaire evaluating technical and analytical interests.</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 12px; align-items: flex-start;">
+                        <i class="fas fa-check-circle" style="color: #10b981; font-size: 1.15rem; margin-top: 3px;"></i>
+                        <div>
+                            <strong style="color: var(--text-heading);">Tiered Learning Roadmaps</strong>
+                            <p style="font-size: 0.88rem; margin-top: 2px;">Beginner, Intermediate, and Advanced milestones with practical exercises.</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 12px; align-items: flex-start;">
+                        <i class="fas fa-check-circle" style="color: #10b981; font-size: 1.15rem; margin-top: 3px;"></i>
+                        <div>
+                            <strong style="color: var(--text-heading);">Placement Preparation Bank</strong>
+                            <p style="font-size: 0.88rem; margin-top: 2px;">Technical Q&A, HR interview responses, and aptitude breakdowns.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="padding: 32px;">
+                <h3 style="margin-bottom: 16px; color: var(--primary);"><i class="fas fa-cogs"></i> Technical Architecture</h3>
+                <div style="display: flex; flex-direction: column; gap: 18px;">
+                    <div>
+                        <span style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--purple);">Frontend Architecture</span>
+                        <p style="font-weight: 600; color: var(--text-heading); margin-top: 2px;">HTML5, CSS3, Modern JavaScript</p>
+                        <p style="font-size: 0.86rem; color: var(--text-muted);">Custom design system, CSS variables, responsive grid, and AJAX topic progress tracking.</p>
+                    </div>
+
+                    <div>
+                        <span style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--purple);">Backend Framework</span>
+                        <p style="font-weight: 600; color: var(--text-heading); margin-top: 2px;">Python & Flask Framework</p>
+                        <p style="font-size: 0.86rem; color: var(--text-muted);">Modular blueprint architecture (auth, student, career, admin) with secure session handling.</p>
+                    </div>
+
+                    <div>
+                        <span style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--purple);">Database Engine</span>
+                        <p style="font-weight: 600; color: var(--text-heading); margin-top: 2px;">MySQL Relational Database</p>
+                        <p style="font-size: 0.86rem; color: var(--text-muted);">11 normalized relational tables with parameterized queries preventing SQL injection.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

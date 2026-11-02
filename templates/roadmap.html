@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block title %}{{ active_roadmap.title }} Roadmap - CAREER GUIDANCE PLATFORM{% endblock %}
+
+{% block content %}
+<!-- Roadmap Header Banner -->
+<section class="section" style="background: linear-gradient(180deg, #f0f4ff 0%, #f8fafc 100%); padding: 48px 0 32px 0; border-bottom: 1px solid var(--border-color);">
+    <div class="container">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
+            <div style="display: flex; align-items: center; gap: 18px;">
+                <div style="width: 60px; height: 60px; border-radius: 12px; background: linear-gradient(135deg, #2563eb 0%, #6366f1 100%); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.85rem; box-shadow: 0 4px 10px rgba(37,99,235,0.25);">
+                    <i class="{{ active_roadmap.icon }}"></i>
+                </div>
+                <div>
+                    <span class="badge badge-purple" style="margin-bottom: 6px;">Curriculum Track</span>
+                    <h1 style="font-size: 2.2rem; margin: 0;">{{ active_roadmap.title }} Roadmap</h1>
+                    <p style="margin: 4px 0 0 0; color: #475569; font-size: 0.95rem;">
+                        {{ active_roadmap.description }} &bull; Duration: <strong>{{ active_roadmap.duration }}</strong>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Progress Box -->
+            <div class="card" style="padding: 16px 20px; background: #ffffff; min-width: 220px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <span style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Track Progress</span>
+                    <span class="roadmap-percent-val" style="font-size: 1.15rem; font-weight: 800; color: var(--primary);">{{ progress_pct }}%</span>
+                </div>
+                <div class="progress-track" style="margin: 0;">
+                    <div class="progress-fill roadmap-progress-bar-fill" style="width: {{ progress_pct }}%;"></div>
+                </div>
+                <span style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px; display: block;">
+                    {{ completed_topic_ids|length }} of {{ all_topics|length }} topics completed
+                </span>
+            </div>
+        </div>
+
+        <!-- Roadmap Switcher Buttons -->
+        <div style="margin-top: 24px; display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px;">
+            {% for r in all_roadmaps %}
+                <a href="{{ url_for('career.roadmap_detail', slug=r.slug) }}" class="btn btn-sm {% if r.slug == active_roadmap.slug %}btn-primary{% else %}btn-outline{% endif %}" style="white-space: nowrap;">
+                    <i class="{{ r.icon }}"></i> {{ r.title }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Roadmap Levels & Topics Content -->
+<section class="section">
+    <div class="container">
+        
+        {% if not session.get('user_id') %}
+            <div class="alert alert-info" style="margin-bottom: 24px;">
+                <div>
+                    <i class="fas fa-info-circle"></i> 
+                    <strong>Tip:</strong> <a href="{{ url_for('auth.login') }}" style="font-weight: 700; text-decoration: underline;">Log in to your student account</a> to tick off topics and save your completion progress to MySQL.
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Level 1: Beginner -->
+        <div class="roadmap-level-container" style="margin-bottom: 36px;">
+            <div class="roadmap-level-badge badge-primary">
+                <i class="fas fa-seedling"></i> Beginner Level (Fundamentals)
+            </div>
+
+            {% for topic in beginner_topics %}
+                {% set is_checked = topic.id in completed_topic_ids %}
+                <div class="topic-item-card {% if is_checked %}completed{% endif %}" id="topic-{{ topic.id }}">
+                    <input type="checkbox" class="topic-checkbox" data-topic-id="{{ topic.id }}" {% if is_checked %}checked{% endif %} title="Mark completed">
+                    <div style="flex: 1;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                            <h3 style="font-size: 1.15rem; margin: 0; color: var(--text-heading);">{{ topic.topic_title }}</h3>
+                            <span class="badge badge-primary" style="font-size: 0.72rem;">Beginner</span>
+                        </div>
+                        <p style="font-size: 0.92rem; color: #475569; margin: 6px 0 14px 0; line-height: 1.6;">
+                            {{ topic.description }}
+                        </p>
+
+                        <div class="grid-3" style="gap: 12px; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px 14px;">
+                            <div>
+                                <strong style="font-size: 0.78rem; text-transform: uppercase; color: var(--primary); display: block; margin-bottom: 4px;">
+                                    <i class="fas fa-dumbbell"></i> Practical Exercise:
+                                </strong>
+                                <span style="font-size: 0.86rem; color: #334155;">{{ topic.practical_exercises }}</span>
+                            </div>
+                            <div>
+                                <strong style="font-size: 0.78rem; text-transform: uppercase; color: var(--purple); display: block; margin-bottom: 4px;">
+                                    <i class="fas fa-project-diagram"></i> Mini-Project Idea:
+                                </strong>
+                                <span style="font-size: 0.86rem; color: #334155;">{{ topic.mini_project }}</span>
+                            </div>
+                            <div>
+                                <strong style="font-size: 0.78rem; text-transform: uppercase; color: #059669; display: block; margin-bottom: 4px;">
+                                    <i class="fas fa-book-reader"></i> Learning Resources:
+                                </strong>
+                                <span style="font-size: 0.86rem; color: #334155;">{{ topic.learning_resources }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Level 2: Intermediate -->
+        <div class="roadmap-level-container" style="margin-bottom: 36px;">
+            <div class="roadmap-level-badge badge-purple">
+                <i class="fas fa-cogs"></i> Intermediate Level (OOP & Architecture)
+            </div>
+
+            {% for topic in intermediate_topics %}
+                {% set is_checked = topic.id in completed_topic_ids %}
+                <div class="topic-item-card {% if is_checked %}completed{% endif %}" id="topic-{{ topic.id }}">
+                    <input type="checkbox" class="topic-checkbox" data-topic-id="{{ topic.id }}" {% if is_checked %}checked{% endif %} title="Mark completed">
+                    <div style="flex: 1;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                            <h3 style="font-size: 1.15rem; margin: 0; color: var(--text-heading);">{{ topic.topic_title }}</h3>
+                            <span class="badge badge-purple" style="font-size: 0.72rem;">Intermediate</span>
+                        </div>
+                        <p style="font-size: 0.92rem; color: #475569; margin: 6px 0 14px 0; line-height: 1.6;">
+                            {{ topic.description }}
+                        </p>
+
+                        <div class="grid-3" style="gap: 12px; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px 14px;">
+                            <div>
+                                <strong style="font-size: 0.78rem; text-transform: uppercase; color: var(--primary); display: block; margin-bottom: 4px;">
+                                    <i class="fas fa-dumbbell"></i> Practical Exercise:
+                                </strong>
+                                <span style="font-size: 0.86rem; color: #334155;">{{ topic.practical_exercises }}</span>
+                            </div>
+                            <div>
+                                <strong style="font-size: 0.78rem; text-transform: uppercase; color: var(--purple); display: block; margin-bottom: 4px;">
+                                    <i class="fas fa-project-diagram"></i> Mini-Project Idea:
+                                </strong>
+                                <span style="font-size: 0.86rem; color: #334155;">{{ topic.mini_project }}</span>
+                            </div>
+                            <div>
+                                <strong style="font-size: 0.78rem; text-transform: uppercase; color: #059669; display: block; margin-bottom: 4px;">
+                                    <i class="fas fa-book-reader"></i> Learning Resources:
+                                </strong>
+                                <span style="font-size: 0.86rem; color: #334155;">{{ topic.learning_resources }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Level 3: Advanced -->
+        <div class="roadmap-level-container">
+            <div class="roadmap-level-badge badge-success">
+                <i class="fas fa-rocket"></i> Advanced Level (Frameworks, Databases & Deployment)
+            </div>
+
+            {% for topic in advanced_topics %}
+                {% set is_checked = topic.id in completed_topic_ids %}
+                <div class="topic-item-card {% if is_checked %}completed{% endif %}" id="topic-{{ topic.id }}">
+                    <input type="checkbox" class="topic-checkbox" data-topic-id="{{ topic.id }}" {% if is_checked %}checked{% endif %} title="Mark completed">
+                    <div style="flex: 1;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                            <h3 style="font-size: 1.15rem; margin: 0; color: var(--text-heading);">{{ topic.topic_title }}</h3>
+                            <span class="badge badge-success" style="font-size: 0.72rem;">Advanced</span>
+                        </div>
+                        <p style="font-size: 0.92rem; color: #475569; margin: 6px 0 14px 0; line-height: 1.6;">
+                            {{ topic.description }}
+                        </p>
+
+                        <div class="grid-3" style="gap: 12px; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px 14px;">
+                            <div>
+                                <strong style="font-size: 0.78rem; text-transform: uppercase; color: var(--primary); display: block; margin-bottom: 4px;">
+                                    <i class="fas fa-dumbbell"></i> Practical Exercise:
+                                </strong>
+                                <span style="font-size: 0.86rem; color: #334155;">{{ topic.practical_exercises }}</span>
+                            </div>
+                            <div>
+                                <strong style="font-size: 0.78rem; text-transform: uppercase; color: var(--purple); display: block; margin-bottom: 4px;">
+                                    <i class="fas fa-project-diagram"></i> Mini-Project Idea:
+                                </strong>
+                                <span style="font-size: 0.86rem; color: #334155;">{{ topic.mini_project }}</span>
+                            </div>
+                            <div>
+                                <strong style="font-size: 0.78rem; text-transform: uppercase; color: #059669; display: block; margin-bottom: 4px;">
+                                    <i class="fas fa-book-reader"></i> Learning Resources:
+                                </strong>
+                                <span style="font-size: 0.86rem; color: #334155;">{{ topic.learning_resources }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+{% endblock %}

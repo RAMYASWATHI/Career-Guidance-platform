@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}Jobs & Internships - CAREER GUIDANCE PLATFORM{% endblock %}
+
+{% block content %}
+<section class="section" style="background: linear-gradient(180deg, #f0f4ff 0%, #f8fafc 100%); padding: 48px 0 36px 0; border-bottom: 1px solid var(--border-color);">
+    <div class="container text-center">
+        <span class="badge badge-warning" style="margin-bottom: 8px;"><i class="fas fa-briefcase"></i> Opportunities</span>
+        <h1 style="margin-bottom: 10px;">Entry-Level Jobs & Internships</h1>
+        <p style="max-width: 680px; margin: 0 auto;">
+            Explore curated opportunities and internship openings across software engineering, data analytics, and web development.
+        </p>
+
+        <!-- Search & Filter Controls -->
+        <div style="max-width: 760px; margin: 28px auto 0 auto; display: flex; gap: 12px; flex-wrap: wrap;">
+            <div style="flex: 2; min-width: 260px;">
+                <input type="text" id="jobSearchInput" class="form-control" placeholder="Search by role title, company, or skills...">
+            </div>
+            <div style="flex: 1; min-width: 180px;">
+                <select id="jobTypeFilter" class="form-select">
+                    <option value="all">All Job Types</option>
+                    <option value="Full-time Fresher">Full-time Fresher</option>
+                    <option value="Internship">Internship</option>
+                    <option value="Entry-level">Entry-level</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        
+        <!-- Ethical Placement Disclaimer Notice -->
+        <div style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 14px 18px; margin-bottom: 32px; display: flex; align-items: center; gap: 14px;">
+            <i class="fas fa-info-circle text-warning" style="font-size: 1.35rem; color: #d97706; flex-shrink: 0;"></i>
+            <div style="font-size: 0.88rem; color: #92400e; line-height: 1.5;">
+                <strong>Representative Opportunities:</strong> These sample openings illustrate entry-level market hiring benchmarks and role requirements for placement preparation.
+            </div>
+        </div>
+
+        <!-- Jobs Grid -->
+        <div class="grid-2" id="jobsGrid" style="gap: 24px;">
+            {% for job in jobs %}
+            <div class="card job-filter-item" data-title="{{ job.title }}" data-company="{{ job.company_name }}" data-skills="{{ job.required_skills }}" data-type="{{ job.job_type }}">
+                <div class="card-header-flex">
+                    <span class="badge {% if job.job_type == 'Internship' %}badge-purple{% elif job.job_type == 'Full-time Fresher' %}badge-primary{% else %}badge-success{% endif %}">
+                        {{ job.job_type }}
+                    </span>
+                    <span style="font-weight: 700; color: #059669; font-size: 0.95rem;">
+                        <i class="fas fa-wallet"></i> {{ job.salary_range }}
+                    </span>
+                </div>
+
+                <h3 style="font-size: 1.25rem; margin-bottom: 4px;">{{ job.title }}</h3>
+                <div style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                    <span><i class="fas fa-building text-primary"></i> <strong>{{ job.company_name }}</strong></span>
+                    <span>&bull;</span>
+                    <span><i class="fas fa-map-marker-alt text-danger"></i> {{ job.location }}</span>
+                    <span>&bull;</span>
+                    <span><i class="fas fa-user-clock text-purple"></i> {{ job.experience_level }}</span>
+                </div>
+
+                <p style="font-size: 0.92rem; color: #475569; line-height: 1.6; margin-bottom: 16px;">
+                    {{ job.description }}
+                </p>
+
+                <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px 14px; margin-bottom: 16px;">
+                    <div style="margin-bottom: 6px;">
+                        <strong style="font-size: 0.78rem; text-transform: uppercase; color: var(--text-muted); display: block;">
+                            <i class="fas fa-check text-primary"></i> Required Skills:
+                        </strong>
+                        <span style="font-size: 0.86rem; color: var(--text-heading); font-weight: 600;">{{ job.required_skills }}</span>
+                    </div>
+                    <div>
+                        <strong style="font-size: 0.78rem; text-transform: uppercase; color: var(--text-muted); display: block;">
+                            <i class="fas fa-graduation-cap text-purple"></i> Eligibility:
+                        </strong>
+                        <span style="font-size: 0.85rem; color: #475569;">{{ job.eligibility }}</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: auto;">
+                    <button class="btn btn-primary btn-sm btn-block" onclick="openApplyModal('{{ job.title }}', '{{ job.company_name }}')">
+                        <i class="fas fa-paper-plane"></i> Quick Apply
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div id="noJobsFound" style="display: none; text-align: center; padding: 48px 16px;">
+            <i class="fas fa-search" style="font-size: 2.5rem; color: var(--text-light); margin-bottom: 12px;"></i>
+            <h3>No Jobs Found Matching Your Filter</h3>
+            <p>Try searching with another keyword or resetting the role type filter.</p>
+        </div>
+
+    </div>
+</section>
+
+<!-- Application Modal -->
+<div id="applyModal" style="display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.6); z-index: 9999; align-items: center; justify-content: center; padding: 20px;">
+    <div class="card" style="max-width: 480px; width: 100%;">
+        <div class="card-header-flex">
+            <h3 style="margin: 0; font-size: 1.2rem;" id="modalJobTitle">Apply for Position</h3>
+            <button type="button" onclick="closeApplyModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #64748b;">&times;</button>
+        </div>
+        <p style="font-size: 0.88rem; color: #475569; margin: 4px 0 16px 0;" id="modalCompany">Company Name</p>
+
+        <form onsubmit="handleApplySubmit(event)">
+            <div class="form-group">
+                <label class="form-label" for="app_fullName">Applicant Full Name</label>
+                <input type="text" id="app_fullName" class="form-control" value="{{ session.get('user_name', '') }}" placeholder="Enter full name" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="app_email">Email Address</label>
+                <input type="email" id="app_email" class="form-control" value="{{ session.get('user_email', '') }}" required autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="app_linkedin">Portfolio / GitHub Profile URL</label>
+                <input type="url" id="app_linkedin" class="form-control" placeholder="Enter portfolio or GitHub URL" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="app_note">Brief Note to Hiring Team (Optional)</label>
+                <textarea id="app_note" class="form-control form-textarea" rows="2" placeholder="Why you are interested in this position..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">
+                <i class="fas fa-check"></i> Submit Application
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function openApplyModal(title, company) {
+        document.getElementById('modalJobTitle').textContent = 'Apply for ' + title;
+        document.getElementById('modalCompany').textContent = 'At ' + company;
+        document.getElementById('applyModal').style.display = 'flex';
+    }
+
+    function closeApplyModal() {
+        document.getElementById('applyModal').style.display = 'none';
+    }
+
+    function handleApplySubmit(e) {
+        e.preventDefault();
+        closeApplyModal();
+        showToast('Application submitted successfully!', 'success');
+    }
+</script>
+{% endblock %}

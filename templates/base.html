@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CAREER GUIDANCE PLATFORM - Explore Your Skills, Discover Your Career, Build Your Future. Complete guidance, learning roadmaps, skills development, and placement preparation.">
+    <title>{% block title %}CAREER GUIDANCE PLATFORM{% endblock %}</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <!-- Professional Two-Line Navigation Bar -->
+    <header class="site-navbar">
+        <!-- Line 1: Brand Logo & Navigation Links (Contact kept at last) -->
+        <div class="container navbar-main-row">
+            <a href="{{ url_for('career.index') }}" class="brand-logo" id="nav-brand-logo">
+                <div class="brand-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <span class="brand-title">CAREER GUIDANCE PLATFORM</span>
+            </a>
+
+            <!-- Navigation Links -->
+            <ul class="nav-menu" id="nav-menu-links">
+                <li><a href="{{ url_for('career.index') }}" class="nav-link {% if request.path == '/' %}active{% endif %}"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="{{ url_for('career.careers_list') }}" class="nav-link {% if '/careers' in request.path %}active{% endif %}"><i class="fas fa-compass"></i> Explore Careers</a></li>
+                <li><a href="{{ url_for('career.roadmaps_list') }}" class="nav-link {% if '/roadmaps' in request.path %}active{% endif %}"><i class="fas fa-route"></i> Roadmaps</a></li>
+                <li><a href="{{ url_for('career.skills_view') }}" class="nav-link {% if request.path == '/skills' %}active{% endif %}"><i class="fas fa-tools"></i> Skills</a></li>
+                <li><a href="{{ url_for('career.interview_prep') }}" class="nav-link {% if request.path == '/interview' %}active{% endif %}"><i class="fas fa-user-check"></i> Interview Prep</a></li>
+                <li><a href="{{ url_for('career.resume_guide') }}" class="nav-link {% if request.path == '/resume' %}active{% endif %}"><i class="fas fa-file-alt"></i> Resume</a></li>
+                <li><a href="{{ url_for('career.jobs_list') }}" class="nav-link {% if request.path == '/jobs' %}active{% endif %}"><i class="fas fa-briefcase"></i> Jobs</a></li>
+                <li><a href="{{ url_for('career.about') }}" class="nav-link {% if request.path == '/about' %}active{% endif %}"><i class="fas fa-info-circle"></i> About</a></li>
+            </ul>
+
+            <button class="mobile-toggle" aria-label="Toggle navigation menu" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Line 2: Action Row with Registration and Login Buttons at Right Corner -->
+        <div class="navbar-action-row">
+            <div class="container navbar-action-inner">
+                {% if session.get('user_id') %}
+                    {% if session.get('role') == 'admin' %}
+                        <a href="{{ url_for('admin.admin_panel') }}" class="btn btn-outline btn-sm" id="nav-admin-btn">
+                            <i class="fas fa-user-shield"></i> Admin Panel
+                        </a>
+                    {% else %}
+                        <a href="{{ url_for('student.dashboard') }}" class="btn btn-outline btn-sm" id="nav-dashboard-btn">
+                            <i class="fas fa-columns"></i> Dashboard
+                        </a>
+                    {% endif %}
+                    <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-primary btn-sm" id="nav-logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-sm" id="nav-register-btn">
+                        <i class="fas fa-user-plus"></i> Registration
+                    </a>
+                    <a href="{{ url_for('auth.login') }}" class="btn btn-outline btn-sm" id="nav-login-btn">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <!-- Flash Messages Container -->
+    <div class="container alert-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category if category != 'error' else 'danger' }}" role="alert">
+                        <div>
+                            {% if category == 'success' %}
+                                <i class="fas fa-check-circle" style="margin-right: 8px;"></i>
+                            {% elif category in ['danger', 'error'] %}
+                                <i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i>
+                            {% else %}
+                                <i class="fas fa-info-circle" style="margin-right: 8px;"></i>
+                            {% endif %}
+                            {{ message }}
+                        </div>
+                        <button type="button" class="alert-close" aria-label="Close alert">&times;</button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Main Content Block -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Professional Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="brand-logo">
+                        <div class="brand-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <span class="brand-title" style="color: #ffffff;">CAREER GUIDANCE PLATFORM</span>
+                    </div>
+                    <p>
+                        "Explore Your Skills, Discover Your Career, Build Your Future."<br>
+                        A comprehensive career empowerment platform guiding students from learning fundamentals to placement success.
+                    </p>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Explore Tracks</h4>
+                    <ul class="footer-links">
+                        <li><a href="{{ url_for('career.careers_list') }}">10 Career Paths</a></li>
+                        <li><a href="{{ url_for('career.roadmaps_list') }}">Learning Roadmaps</a></li>
+                        <li><a href="{{ url_for('student.career_assessment_view') }}">Career Assessment</a></li>
+                        <li><a href="{{ url_for('career.skills_view') }}">Skills Framework</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Placement Prep</h4>
+                    <ul class="footer-links">
+                        <li><a href="{{ url_for('career.interview_prep') }}">Technical Q&A</a></li>
+                        <li><a href="{{ url_for('career.interview_prep') }}?cat=hr">HR Interview Prep</a></li>
+                        <li><a href="{{ url_for('career.interview_prep') }}?cat=aptitude">Aptitude & Reasoning</a></li>
+                        <li><a href="{{ url_for('career.resume_guide') }}">Resume Builder</a></li>
+                        <li><a href="{{ url_for('career.jobs_list') }}">Jobs & Internships</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Contact & Support</h4>
+                    <p style="font-size: 0.88rem; line-height: 1.6; margin-bottom: 14px; color: #94a3b8;">
+                        Have questions about career roadmaps or placement preparation? Reach out to us anytime.
+                    </p>
+                    <a href="{{ url_for('career.contact') }}" class="btn btn-primary btn-sm" id="footer-contact-btn" style="margin-bottom: 14px; display: inline-flex;">
+                        <i class="fas fa-envelope"></i> Contact Us
+                    </a>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <span class="badge badge-primary" style="font-size: 0.72rem;">Python Flask</span>
+                        <span class="badge badge-purple" style="font-size: 0.72rem;">MySQL</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div>
+                    &copy; 2026 CAREER GUIDANCE PLATFORM. All rights reserved.
+                </div>
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <a href="{{ url_for('career.about') }}" style="color: #94a3b8; font-size: 0.85rem;">About</a>
+                    <span style="color: #475569;">&bull;</span>
+                    <a href="{{ url_for('career.contact') }}" style="color: #60a5fa; font-weight: 700; font-size: 0.85rem;"><i class="fas fa-envelope"></i> Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom Script -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - CAREER GUIDANCE PLATFORM{% endblock %}
+
+{% block content %}
+<section class="section" style="background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); color: #ffffff; padding: 40px 0;">
+    <div class="container">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+            <div>
+                <span class="badge" style="background: rgba(167, 139, 250, 0.2); color: #c4b5fd; margin-bottom: 6px;">
+                    <i class="fas fa-shield-alt"></i> Administrative Control
+                </span>
+                <h1 style="color: #ffffff; font-size: 2rem; margin: 0;">Platform Administration</h1>
+                <p style="color: #94a3b8; margin: 4px 0 0 0; font-size: 0.95rem;">
+                    Manage student accounts, add career tracks, post job openings, and update interview questions.
+                </p>
+            </div>
+            <div>
+                <span class="badge badge-success" style="font-size: 0.85rem; padding: 6px 14px;">
+                    <i class="fas fa-user-shield"></i> Logged in as Admin
+                </span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        
+        <!-- Platform Metrics -->
+        <div class="grid-4" style="margin-bottom: 32px;">
+            <div class="dashboard-stat-card">
+                <div class="stat-icon-wrap" style="background: var(--primary-subtle); color: var(--primary);">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <div>
+                    <span style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Students</span>
+                    <h3 style="font-size: 1.45rem; margin-top: 2px;">{{ students|length }}</h3>
+                </div>
+            </div>
+
+            <div class="dashboard-stat-card">
+                <div class="stat-icon-wrap" style="background: var(--purple-subtle); color: var(--purple);">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <div>
+                    <span style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Careers</span>
+                    <h3 style="font-size: 1.45rem; margin-top: 2px;">{{ careers_count }}</h3>
+                </div>
+            </div>
+
+            <div class="dashboard-stat-card">
+                <div class="stat-icon-wrap" style="background: var(--success-subtle); color: var(--success);">
+                    <i class="fas fa-route"></i>
+                </div>
+                <div>
+                    <span style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Roadmap Topics</span>
+                    <h3 style="font-size: 1.45rem; margin-top: 2px;">{{ topics_count }}</h3>
+                </div>
+            </div>
+
+            <div class="dashboard-stat-card">
+                <div class="stat-icon-wrap" style="background: var(--warning-subtle); color: #d97706;">
+                    <i class="fas fa-question-circle"></i>
+                </div>
+                <div>
+                    <span style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Interview Bank</span>
+                    <h3 style="font-size: 1.45rem; margin-top: 2px;">{{ questions_count }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Registered Students Table -->
+        <div class="card" style="margin-bottom: 36px;">
+            <div class="card-header-flex">
+                <div>
+                    <h2 style="font-size: 1.35rem; margin: 0;"><i class="fas fa-users text-primary"></i> Registered Students</h2>
+                    <span style="font-size: 0.85rem; color: var(--text-muted);">Manage student records, colleges, and selected career paths.</span>
+                </div>
+            </div>
+
+            <div style="overflow-x: auto; margin-top: 12px;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid var(--border-color); color: var(--text-muted); font-size: 0.78rem; text-transform: uppercase;">
+                            <th style="padding: 10px 14px;">ID</th>
+                            <th style="padding: 10px 14px;">Student Name</th>
+                            <th style="padding: 10px 14px;">Email</th>
+                            <th style="padding: 10px 14px;">College</th>
+                            <th style="padding: 10px 14px;">Target Career</th>
+                            <th style="padding: 10px 14px;">Batch</th>
+                            <th style="padding: 10px 14px; text-align: right;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for s in students %}
+                        <tr style="border-bottom: 1px solid #f1f5f9;">
+                            <td style="padding: 12px 14px; font-weight: 600;">#{{ s.id }}</td>
+                            <td style="padding: 12px 14px; font-weight: 600; color: var(--text-heading);">{{ s.full_name }}</td>
+                            <td style="padding: 12px 14px; color: #475569;">{{ s.email }}</td>
+                            <td style="padding: 12px 14px; color: #475569;">{{ s.college_name or 'N/A' }}</td>
+                            <td style="padding: 12px 14px;">
+                                <span class="badge badge-primary" style="font-size: 0.75rem;">{{ s.selected_career or 'Undecided' }}</span>
+                            </td>
+                            <td style="padding: 12px 14px; color: #475569;">{{ s.graduation_year or '2026' }}</td>
+                            <td style="padding: 12px 14px; text-align: right;">
+                                {% if s.role != 'admin' %}
+                                <form action="{{ url_for('admin.delete_student', user_id=s.id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Remove student record?');">
+                                    <button type="submit" class="btn btn-outline btn-sm" style="color: #ef4444; border-color: #fecaca; height: 30px; padding: 0 10px; font-size: 0.75rem;">
+                                        Delete
+                                    </button>
+                                </form>
+                                {% else %}
+                                <span class="badge badge-purple" style="font-size: 0.7rem;">Admin</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Administrative Content Management Forms -->
+        <div class="grid-3" style="gap: 24px;">
+            <!-- Form 1: Add Career -->
+            <div class="card">
+                <h3 style="font-size: 1.15rem; margin-bottom: 14px;"><i class="fas fa-briefcase text-primary"></i> Add Career Track</h3>
+                <form action="{{ url_for('admin.add_career') }}" method="POST">
+                    <div class="form-group">
+                        <label class="form-label">Role Title *</label>
+                        <input type="text" name="title" class="form-control" placeholder="Enter role title" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Category *</label>
+                        <input type="text" name="category" class="form-control" placeholder="Enter category domain" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Salary Range</label>
+                        <input type="text" name="average_salary" class="form-control" placeholder="Enter compensation range" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description *</label>
+                        <textarea name="description" class="form-control form-textarea" rows="2" placeholder="Enter overview of duties and expectations" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Required Skills *</label>
+                        <input type="text" name="required_skills" class="form-control" placeholder="Enter required skills (comma-separated)" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block btn-sm">
+                        <i class="fas fa-plus"></i> Save Career Track
+                    </button>
+                </form>
+            </div>
+
+            <!-- Form 2: Post Job -->
+            <div class="card">
+                <h3 style="font-size: 1.15rem; margin-bottom: 14px;"><i class="fas fa-paper-plane text-purple"></i> Post Job Opportunity</h3>
+                <form action="{{ url_for('admin.add_job') }}" method="POST">
+                    <div class="form-group">
+                        <label class="form-label">Job Title *</label>
+                        <input type="text" name="title" class="form-control" placeholder="Enter job title" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Company Name *</label>
+                        <input type="text" name="company_name" class="form-control" placeholder="Enter company name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Location</label>
+                        <input type="text" name="location" class="form-control" placeholder="Enter location or Remote" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Type *</label>
+                        <select name="job_type" class="form-select" required>
+                            <option value="Full-time Fresher">Full-time Fresher</option>
+                            <option value="Internship">Internship</option>
+                            <option value="Entry-level">Entry-level</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Salary / Stipend</label>
+                        <input type="text" name="salary_range" class="form-control" placeholder="Enter salary or stipend" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Required Skills *</label>
+                        <input type="text" name="required_skills" class="form-control" placeholder="Enter required skills (comma-separated)" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description *</label>
+                        <textarea name="description" class="form-control form-textarea" rows="2" placeholder="Enter responsibilities and requirements" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block btn-sm">
+                        <i class="fas fa-plus"></i> Post Opportunity
+                    </button>
+                </form>
+            </div>
+
+            <!-- Form 3: Add Interview Question -->
+            <div class="card">
+                <h3 style="font-size: 1.15rem; margin-bottom: 14px;"><i class="fas fa-question text-success"></i> Add Question</h3>
+                <form action="{{ url_for('admin.add_interview_question') }}" method="POST">
+                    <div class="form-group">
+                        <label class="form-label">Category *</label>
+                        <select name="category" class="form-select" required>
+                            <option value="technical">Technical</option>
+                            <option value="hr">HR Round</option>
+                            <option value="aptitude">Aptitude</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Subcategory / Topic *</label>
+                        <input type="text" name="subcategory" class="form-control" placeholder="Enter subcategory or topic" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Question Text *</label>
+                        <textarea name="question" class="form-control form-textarea" rows="2" placeholder="Enter question text" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Recommended Answer *</label>
+                        <textarea name="answer" class="form-control form-textarea" rows="3" placeholder="Enter recommended structured answer" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Explanation</label>
+                        <textarea name="explanation" class="form-control form-textarea" rows="2" placeholder="Enter background insights or explanation"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block btn-sm">
+                        <i class="fas fa-plus"></i> Add Question
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

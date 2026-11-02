@@ -1,0 +1,292 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - {{ student.full_name }} | CAREER GUIDANCE PLATFORM{% endblock %}
+
+{% block content %}
+<!-- Dashboard Header Banner -->
+<div class="dashboard-header">
+    <div class="container">
+        <div class="dashboard-user-card">
+            <div class="user-meta-group">
+                <div class="user-avatar-circle">
+                    {{ student.full_name[0] | upper }}
+                </div>
+                <div>
+                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                        <h1 style="color: #ffffff; font-size: 1.85rem; margin: 0;">Welcome, {{ student.full_name }}!</h1>
+                        <span class="badge" style="background: rgba(255,255,255,0.2); color: #ffffff;">Batch {{ profile.graduation_year or '2026' }}</span>
+                    </div>
+                    <p style="color: #cbd5e1; margin-top: 4px; font-size: 0.95rem;">
+                        <i class="fas fa-university"></i> {{ profile.college_name or 'Engineering Institute' }} &bull; {{ profile.degree or 'B.Tech' }} ({{ profile.department or 'CSE' }})
+                    </p>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <a href="{{ url_for('student.career_assessment_view') }}" class="btn btn-sm" style="background: #ffffff; color: #1e3a8a; font-weight: 700;">
+                    <i class="fas fa-clipboard-check"></i> Retake Assessment
+                </a>
+                <a href="#profileEditSection" class="btn btn-outline btn-sm" style="color: #ffffff; border-color: rgba(255,255,255,0.4);" onclick="document.getElementById('profileEditSection').scrollIntoView({behavior: 'smooth'})">
+                    <i class="fas fa-user-edit"></i> Edit Profile
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" style="margin-bottom: 48px;">
+    <!-- Top Metric Overview Cards -->
+    <div class="grid-4" style="margin-bottom: 28px;">
+        <div class="dashboard-stat-card">
+            <div class="stat-icon-wrap" style="background: var(--primary-subtle); color: var(--primary);">
+                <i class="fas fa-bullseye"></i>
+            </div>
+            <div>
+                <span style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Target Career</span>
+                <h3 style="font-size: 1.15rem; margin-top: 2px;">{{ profile.selected_career or 'Undecided' }}</h3>
+            </div>
+        </div>
+
+        <div class="dashboard-stat-card">
+            <div class="stat-icon-wrap" style="background: var(--purple-subtle); color: var(--purple);">
+                <i class="fas fa-tasks"></i>
+            </div>
+            <div style="flex: 1;">
+                <span style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Roadmap Progress</span>
+                <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                    <h3 style="font-size: 1.15rem; margin-top: 2px;">{{ completed_topics_count }} / {{ total_topics_count }} Topics</h3>
+                    <span style="font-weight: 700; color: var(--purple); font-size: 0.85rem;">{{ progress_pct }}%</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" style="width: {{ progress_pct }}%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-stat-card">
+            <div class="stat-icon-wrap" style="background: var(--success-subtle); color: var(--success);">
+                <i class="fas fa-poll-h"></i>
+            </div>
+            <div>
+                <span style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Assessment Match</span>
+                <h3 style="font-size: 1.15rem; margin-top: 2px;">
+                    {% if latest_assessment %}
+                        {{ latest_assessment.recommended_career }}
+                    {% else %}
+                        Not Taken Yet
+                    {% endif %}
+                </h3>
+            </div>
+        </div>
+
+        <div class="dashboard-stat-card">
+            <div class="stat-icon-wrap" style="background: var(--warning-subtle); color: #d97706;">
+                <i class="fas fa-briefcase"></i>
+            </div>
+            <div>
+                <span style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Active Listings</span>
+                <h3 style="font-size: 1.15rem; margin-top: 2px;">{{ jobs_count }} Openings</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Grid -->
+    <div class="grid-3" style="grid-template-columns: 2fr 1fr; gap: 28px;">
+        <!-- Left Column -->
+        <div style="display: flex; flex-direction: column; gap: 28px;">
+            
+            <!-- Latest Career Assessment Recommendation Card -->
+            <div class="card">
+                <div class="card-header-flex">
+                    <div>
+                        <span class="badge badge-purple"><i class="fas fa-brain"></i> Recommended Path</span>
+                        <h2 style="font-size: 1.35rem; margin-top: 4px;">Career Assessment Insight</h2>
+                    </div>
+                    {% if latest_assessment %}
+                        <a href="{{ url_for('student.career_results', assessment_id=latest_assessment.id) }}" class="btn btn-outline btn-sm">
+                            Full Report &rarr;
+                        </a>
+                    {% endif %}
+                </div>
+
+                {% if latest_assessment %}
+                    <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 10px; padding: 20px; margin-bottom: 16px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;">
+                            <div>
+                                <span style="font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Top Recommended Role</span>
+                                <h3 style="color: var(--primary); font-size: 1.45rem; margin: 0;">{{ latest_assessment.recommended_career }}</h3>
+                            </div>
+                            <span class="badge badge-success"><i class="fas fa-check-circle"></i> High Match</span>
+                        </div>
+                        <p style="font-size: 0.94rem; color: #334155; line-height: 1.6; margin-bottom: 14px;">
+                            {{ latest_assessment.match_reason }}
+                        </p>
+                        <div class="grid-2" style="gap: 14px;">
+                            <div style="background: #ffffff; padding: 14px; border-radius: 8px; border: 1px solid var(--border-color);">
+                                <strong style="font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 4px;">
+                                    <i class="fas fa-laptop-code text-primary"></i> Required Technical Skills:
+                                </strong>
+                                <span style="font-size: 0.88rem; color: var(--text-heading); font-weight: 600;">{{ latest_assessment.technical_skills }}</span>
+                            </div>
+                            <div style="background: #ffffff; padding: 14px; border-radius: 8px; border: 1px solid var(--border-color);">
+                                <strong style="font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 4px;">
+                                    <i class="fas fa-users text-purple"></i> Required Soft Skills:
+                                </strong>
+                                <span style="font-size: 0.88rem; color: var(--text-heading); font-weight: 600;">{{ latest_assessment.soft_skills }}</span>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div style="text-align: center; padding: 36px 20px; background: #f8fafc; border-radius: 10px; border: 1px dashed var(--border-input);">
+                        <i class="fas fa-clipboard-list" style="font-size: 2.2rem; color: var(--text-light); margin-bottom: 12px;"></i>
+                        <h4>Take Your Career Assessment</h4>
+                        <p style="max-width: 440px; margin: 6px auto 18px auto; font-size: 0.92rem;">
+                            Discover which tech domain best aligns with your programming preferences and strengths.
+                        </p>
+                        <a href="{{ url_for('student.career_assessment_view') }}" class="btn btn-primary">
+                            <i class="fas fa-play"></i> Start Career Assessment
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Active Learning Roadmap Card -->
+            <div class="card">
+                <div class="card-header-flex">
+                    <div>
+                        <span class="badge badge-primary"><i class="fas fa-route"></i> Roadmap Tracking</span>
+                        <h2 style="font-size: 1.35rem; margin-top: 4px;">Learning Milestones</h2>
+                    </div>
+                    <a href="{{ url_for('career.roadmaps_list') }}" class="btn btn-outline btn-sm">
+                        All Roadmaps &rarr;
+                    </a>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    {% for r in active_roadmaps %}
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <div style="display: flex; align-items: center; gap: 14px;">
+                            <div style="width: 38px; height: 38px; border-radius: 8px; background: var(--primary-subtle); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.15rem;">
+                                <i class="{{ r.icon }}"></i>
+                            </div>
+                            <div>
+                                <h4 style="margin: 0; font-size: 0.98rem;">{{ r.title }}</h4>
+                                <span style="font-size: 0.8rem; color: var(--text-muted);"><i class="far fa-clock"></i> {{ r.duration }} &bull; {{ r.total_levels }} Levels</span>
+                            </div>
+                        </div>
+                        <a href="{{ url_for('career.roadmap_detail', slug=r.slug) }}" class="btn btn-outline-primary btn-sm">
+                            Open Roadmap &rarr;
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Profile Details and Edit Form -->
+            <div class="card" id="profileEditSection">
+                <div class="card-header-flex">
+                    <div>
+                        <span class="badge badge-info"><i class="fas fa-id-card"></i> Student Profile</span>
+                        <h2 style="font-size: 1.35rem; margin-top: 4px;">Education & Target Career</h2>
+                    </div>
+                </div>
+
+                <form action="{{ url_for('student.update_profile') }}" method="POST">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="college_name">College Name</label>
+                            <input type="text" id="college_name" name="college_name" class="form-control" value="{{ profile.college_name or '' }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="target_career">Target Career Path</label>
+                            <select id="target_career" name="selected_career" class="form-select">
+                                {% for c in all_careers %}
+                                    <option value="{{ c.title }}" {% if profile.selected_career == c.title %}selected{% endif %}>{{ c.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="degree">Degree</label>
+                            <input type="text" id="degree" name="degree" class="form-control" value="{{ profile.degree or 'B.Tech' }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="department">Department</label>
+                            <input type="text" id="department" name="department" class="form-control" value="{{ profile.department or 'Computer Science' }}" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="current_skills">Current Technical Skills (comma separated)</label>
+                        <input type="text" id="current_skills" name="current_skills" class="form-control" placeholder="Enter technical skills separated by commas" value="{{ profile.current_skills or '' }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="bio">Career Objective / Bio</label>
+                        <textarea id="bio" name="bio" class="form-control form-textarea" rows="3" placeholder="Describe your career goals...">{{ profile.bio or '' }}</textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="save-profile-btn">
+                        <i class="fas fa-save"></i> Save Profile Details
+                    </button>
+                </form>
+            </div>
+
+        </div>
+
+        <!-- Right Column -->
+        <div style="display: flex; flex-direction: column; gap: 24px;">
+            
+            <!-- Quick Actions -->
+            <div class="card">
+                <h3 style="font-size: 1.15rem; margin-bottom: 14px;"><i class="fas fa-bolt text-primary"></i> Quick Actions</h3>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <a href="{{ url_for('career.interview_prep') }}" class="btn btn-outline btn-block" style="justify-content: flex-start;">
+                        <i class="fas fa-user-check text-primary"></i> Technical Q&A Bank
+                    </a>
+                    <a href="{{ url_for('career.interview_prep') }}?cat=hr" class="btn btn-outline btn-block" style="justify-content: flex-start;">
+                        <i class="fas fa-comments text-purple"></i> HR Interview Prep
+                    </a>
+                    <a href="{{ url_for('career.resume_guide') }}" class="btn btn-outline btn-block" style="justify-content: flex-start;">
+                        <i class="fas fa-file-invoice" style="color: #10b981;"></i> Resume Builder
+                    </a>
+                    <a href="{{ url_for('career.skills_view') }}" class="btn btn-outline btn-block" style="justify-content: flex-start;">
+                        <i class="fas fa-tools" style="color: #d97706;"></i> Skills Guide
+                    </a>
+                </div>
+            </div>
+
+            <!-- Opportunities Card -->
+            <div class="card">
+                <div class="card-header-flex">
+                    <h3 style="font-size: 1.15rem; margin: 0;"><i class="fas fa-briefcase text-primary"></i> Job Openings</h3>
+                    <a href="{{ url_for('career.jobs_list') }}" style="font-size: 0.85rem; font-weight: 600;">View All</a>
+                </div>
+                
+                <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 8px;">
+                    {% for job in sample_jobs %}
+                    <div style="padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background: #ffffff;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div>
+                                <h4 style="font-size: 0.94rem; margin: 0;">{{ job.title }}</h4>
+                                <span style="font-size: 0.8rem; color: var(--text-muted);">{{ job.company_name }} &bull; {{ job.location }}</span>
+                            </div>
+                            <span class="badge badge-primary" style="font-size: 0.7rem;">{{ job.job_type }}</span>
+                        </div>
+                        <div style="margin-top: 8px; display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.82rem; font-weight: 700; color: #059669;">{{ job.salary_range }}</span>
+                            <a href="{{ url_for('career.jobs_list') }}" class="btn btn-outline-primary btn-sm" style="height: 30px; padding: 0 10px; font-size: 0.78rem;">
+                                Apply
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

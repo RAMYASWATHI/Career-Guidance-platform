@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Student Registration - CAREER GUIDANCE PLATFORM{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-card auth-card-wide">
+        <div class="auth-header">
+            <span class="badge badge-primary"><i class="fas fa-user-plus"></i> Student Sign Up</span>
+            <h2>Create Your Student Account</h2>
+            <p>Enter your academic details to access personalized career roadmaps and placement preparation.</p>
+        </div>
+
+        <form action="{{ url_for('auth.register') }}" method="POST" id="studentRegisterForm">
+            <!-- Row 1: Name and Email -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label" for="full_name">Student Full Name *</label>
+                    <input type="text" id="full_name" name="full_name" class="form-control" placeholder="Enter student full name" required value="{{ request.form.get('full_name', '') }}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="email">College Email Address *</label>
+                    <input type="email" id="email" name="email" class="form-control" required value="{{ request.form.get('email', '') }}" autocomplete="off">
+                </div>
+            </div>
+
+            <!-- Row 2: Passwords -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label" for="password">Password *</label>
+                    <input type="password" id="password" name="password" class="form-control" minlength="6" required autocomplete="new-password">
+                    <span class="form-help">Must be at least 6 characters</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="confirm_password">Confirm Password *</label>
+                    <input type="password" id="confirm_password" name="confirm_password" class="form-control" minlength="6" required autocomplete="new-password">
+                </div>
+            </div>
+
+            <!-- Row 3: College and Degree -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label" for="college_name">College / Institute Name *</label>
+                    <input type="text" id="college_name" name="college_name" class="form-control" placeholder="Enter college / institute name" required value="{{ request.form.get('college_name', '') }}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="degree">Degree Program *</label>
+                    <select id="degree" name="degree" class="form-select" required>
+                        <option value="B.Tech" selected>B.Tech / B.E (Engineering)</option>
+                        <option value="BCA">BCA (Computer Applications)</option>
+                        <option value="MCA">MCA (Master of Computer Apps)</option>
+                        <option value="B.Sc CS/IT">B.Sc Computer Science / IT</option>
+                        <option value="M.Tech">M.Tech (Postgraduate)</option>
+                        <option value="Other">Other Degree</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Row 4: Department and Graduation Year -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label" for="department">Department / Branch *</label>
+                    <select id="department" name="department" class="form-select" required>
+                        <option value="Computer Science and Engineering" selected>Computer Science & Engineering (CSE)</option>
+                        <option value="Information Technology">Information Technology (IT)</option>
+                        <option value="Electronics and Communication">Electronics & Communication (ECE)</option>
+                        <option value="Electrical and Electronics">Electrical & Electronics (EEE)</option>
+                        <option value="Mechanical Engineering">Mechanical Engineering</option>
+                        <option value="Civil Engineering">Civil Engineering</option>
+                        <option value="Other">Other Department</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="graduation_year">Graduation Year *</label>
+                    <select id="graduation_year" name="graduation_year" class="form-select" required>
+                        <option value="2027">2027 (Pre-final Year)</option>
+                        <option value="2026" selected>2026 (Final Year)</option>
+                        <option value="2025">2025 (Recent Graduate)</option>
+                        <option value="2024">2024 (Alumni)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="margin-top: 10px;">
+                <button type="submit" class="btn btn-primary btn-lg btn-block" id="register-submit-btn">
+                    <i class="fas fa-user-check"></i> Register Account
+                </button>
+            </div>
+
+            <p style="text-align: center; margin-top: 20px; font-size: 0.92rem;">
+                Already have an account? <a href="{{ url_for('auth.login') }}" style="font-weight: 700;">Sign in here &rarr;</a>
+            </p>
+        </form>
+    </div>
+</div>
+{% endblock %}

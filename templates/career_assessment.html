@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Career Assessment - CAREER GUIDANCE PLATFORM{% endblock %}
+
+{% block content %}
+<section class="section" style="background: linear-gradient(180deg, #f0f4ff 0%, #f8fafc 100%); padding: 48px 0 32px 0; border-bottom: 1px solid var(--border-color);">
+    <div class="container container-narrow text-center">
+        <span class="badge badge-purple" style="margin-bottom: 8px;"><i class="fas fa-brain"></i> Interactive Assessment</span>
+        <h1 style="margin-bottom: 10px;">Career Assessment Questionnaire</h1>
+        <p style="max-width: 620px; margin: 0 auto;">
+            Answer the following 7 questions thoughtfully. Our algorithm evaluates your programming interests, problem solving, and goals to recommend your ideal career path.
+        </p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container container-narrow">
+        <form action="{{ url_for('student.career_assessment_submit') }}" method="POST" id="careerAssessmentForm">
+            {% for q in questions %}
+                <div class="assessment-card" id="block-{{ q.id }}">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                        <span class="badge badge-primary">{{ q.category }}</span>
+                        <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted);">Question {{ loop.index }} of {{ questions|length }}</span>
+                    </div>
+
+                    <h2 class="question-title">
+                        <span class="question-number">{{ loop.index }}</span>
+                        <span>{{ q.question }}</span>
+                    </h2>
+
+                    <div class="options-grid">
+                        {% for opt in q.options %}
+                            <label class="option-radio-card" for="{{ q.id }}_{{ opt.value }}">
+                                <input type="radio" id="{{ q.id }}_{{ opt.value }}" name="{{ q.id }}" value="{{ opt.value }}" required>
+                                <span style="font-size: 0.94rem; font-weight: 500; line-height: 1.5;">
+                                    {{ opt.text }}
+                                </span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+
+            <div class="card" style="text-align: center; padding: 28px; background: #ffffff;">
+                <h3 style="margin-bottom: 8px;">Completed All Questions?</h3>
+                <p style="margin-bottom: 20px; font-size: 0.94rem;">
+                    Submit your answers to generate your customized software career match and learning roadmap.
+                </p>
+                <button type="submit" class="btn btn-primary btn-lg" id="submit-assessment-btn" style="min-width: 240px; margin: 0 auto;">
+                    <i class="fas fa-magic"></i> Generate Career Recommendation
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

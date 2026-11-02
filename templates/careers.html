@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Explore Careers - CAREER GUIDANCE PLATFORM{% endblock %}
+
+{% block content %}
+<section class="section" style="background: linear-gradient(180deg, #f0f4ff 0%, #f8fafc 100%); padding: 48px 0 36px 0; border-bottom: 1px solid var(--border-color);">
+    <div class="container text-center">
+        <span class="badge badge-primary" style="margin-bottom: 8px;"><i class="fas fa-compass"></i> Career Exploration</span>
+        <h1 style="margin-bottom: 10px;">10 In-Demand Tech Career Tracks</h1>
+        <p style="max-width: 680px; margin: 0 auto;">
+            Explore role requirements, required skill stacks, and practical learning roadmaps.
+        </p>
+
+        <!-- Search & Filter Controls -->
+        <div style="max-width: 760px; margin: 28px auto 0 auto; display: flex; gap: 12px; flex-wrap: wrap;">
+            <div style="flex: 2; min-width: 260px;">
+                <input type="text" id="careerSearchInput" class="form-control" placeholder="Search by career title or skill...">
+            </div>
+            <div style="flex: 1; min-width: 180px;">
+                <select id="careerCategoryFilter" class="form-select">
+                    <option value="all">All Domains</option>
+                    <option value="Software Engineering">Software Engineering</option>
+                    <option value="Web & Mobile">Web & Mobile</option>
+                    <option value="Data & Analytics">Data & Analytics</option>
+                    <option value="Data Science & AI">Data Science & AI</option>
+                    <option value="Artificial Intelligence">Artificial Intelligence</option>
+                    <option value="Quality Assurance">Quality Assurance</option>
+                    <option value="Cloud & DevOps">Cloud & DevOps</option>
+                    <option value="Information Security">Information Security</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="grid-3" id="careersGrid">
+            {% for career in careers %}
+            <div class="card career-filter-item" data-title="{{ career.title }}" data-skills="{{ career.required_skills }}" data-category="{{ career.category }}">
+                <div class="card-header-flex">
+                    <span class="badge badge-purple">{{ career.category }}</span>
+                </div>
+
+                <div class="card-icon-box">
+                    <i class="{{ career.icon }}"></i>
+                </div>
+
+                <h3 style="font-size: 1.25rem; margin-bottom: 8px;">{{ career.title }}</h3>
+                <p style="font-size: 0.92rem; color: #475569; line-height: 1.5; margin-bottom: 16px;">
+                    {{ career.description }}
+                </p>
+
+                <div style="margin-bottom: 14px;">
+                    <strong style="font-size: 0.78rem; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px;">
+                        <i class="fas fa-check text-primary"></i> Required Skills:
+                    </strong>
+                    <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+                        {% for sk in career.required_skills.split(',')[:4] %}
+                            <span style="background: #f1f5f9; color: #334155; font-size: 0.78rem; font-weight: 600; padding: 3px 8px; border-radius: 4px;">{{ sk.strip() }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <strong style="font-size: 0.78rem; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 4px;">
+                        <i class="fas fa-tools text-purple"></i> Tools & Tech:
+                    </strong>
+                    <span style="font-size: 0.85rem; color: var(--text-heading); font-weight: 500;">{{ career.tools_technologies }}</span>
+                </div>
+
+                <div style="margin-top: auto;">
+                    <a href="{{ url_for('career.career_detail', career_id=career.id) }}" class="btn btn-primary btn-sm btn-block">
+                        View Complete Guide &rarr;
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div id="noCareersFound" style="display: none; text-align: center; padding: 48px 16px;">
+            <i class="fas fa-search" style="font-size: 2.5rem; color: var(--text-light); margin-bottom: 12px;"></i>
+            <h3>No Career Tracks Found</h3>
+            <p>Try searching for a different keyword or resetting the domain filter.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

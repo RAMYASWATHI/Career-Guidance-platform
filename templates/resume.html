@@ -1,0 +1,301 @@
+{% extends "base.html" %}
+
+{% block title %}Resume Guidance & Builder - CAREER GUIDANCE PLATFORM{% endblock %}
+
+{% block content %}
+<section class="section" style="background: linear-gradient(180deg, #f0f4ff 0%, #f8fafc 100%); padding: 48px 0 32px 0; border-bottom: 1px solid var(--border-color);">
+    <div class="container text-center">
+        <span class="badge badge-primary" style="margin-bottom: 8px;"><i class="fas fa-file-invoice"></i> Resume Guidance</span>
+        <h1 style="margin-bottom: 10px;">Fresher Resume Guidance & Live Builder</h1>
+        <p style="max-width: 680px; margin: 0 auto;">
+            Learn standard fresher resume guidelines and use our interactive builder to preview and format your one-page resume.
+        </p>
+
+        <!-- Tab Controls -->
+        <div class="tab-nav tabs-container" style="justify-content: center; margin-top: 32px; border-bottom: none;">
+            <button class="btn btn-lg tab-btn active" data-tab="guideTab" id="tab-guide-btn">
+                <i class="fas fa-book-open"></i> Resume Structure & Tips
+            </button>
+            <button class="btn btn-lg tab-btn" data-tab="builderTab" id="tab-builder-btn">
+                <i class="fas fa-magic"></i> Live Resume Builder
+            </button>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container tabs-container">
+        
+        <!-- Tab 1: Guidelines -->
+        <div id="guideTab" class="tab-pane active">
+            <div class="section-header" style="margin-bottom: 32px;">
+                <span class="section-tag">Essential Components</span>
+                <h2>8 Key Sections Every Fresher Resume Needs</h2>
+            </div>
+
+            <div class="grid-4" style="margin-bottom: 36px;">
+                <div class="card">
+                    <div class="card-icon-box">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h4>1. Header Details</h4>
+                    <p style="font-size: 0.88rem;">Full Name, email address, phone number, LinkedIn, and GitHub profile link.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon-box purple">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h4>2. Career Objective</h4>
+                    <p style="font-size: 0.88rem;">2-3 lines stating your technical strengths, career ambition, and enthusiasm.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon-box green">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h4>3. Education</h4>
+                    <p style="font-size: 0.88rem;">Degree, College Name, University, CGPA/Percentage, and Year of Passing.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon-box orange">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h4>4. Technical Skills</h4>
+                    <p style="font-size: 0.88rem;">Programming languages, frameworks, database tools, and version control.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon-box">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h4>5. Projects</h4>
+                    <p style="font-size: 0.88rem;">2-3 academic or capstone projects with technologies used and problem solved.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon-box purple">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <h4>6. Certifications</h4>
+                    <p style="font-size: 0.88rem;">Verified credentials and courses completed (NPTEL, Coursera, HackerRank).</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon-box green">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h4>7. Experience / Internships</h4>
+                    <p style="font-size: 0.88rem;">Internships, freelance work, or college technical committee roles.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon-box orange">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h4>8. Achievements</h4>
+                    <p style="font-size: 0.88rem;">Hackathons, coding contests, technical symposiums, and extracurriculars.</p>
+                </div>
+            </div>
+
+            <!-- Objective Examples -->
+            <div class="card" style="margin-bottom: 36px;">
+                <h3 style="margin-bottom: 16px;"><i class="fas fa-quote-left text-primary"></i> Sample Career Objectives</h3>
+                <div class="grid-2" style="gap: 16px;">
+                    <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; padding: 16px;">
+                        <span class="badge badge-primary" style="margin-bottom: 6px;">Software Developer</span>
+                        <p style="font-size: 0.9rem; color: #334155; line-height: 1.6; margin: 0;">
+                            "Enthusiastic Computer Science undergraduate with hands-on proficiency in Python, object-oriented programming, and SQL databases. Seeking an entry-level Software Developer role to write clean code and contribute to scalable solutions."
+                        </p>
+                    </div>
+
+                    <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; padding: 16px;">
+                        <span class="badge badge-purple" style="margin-bottom: 6px;">Web & Full Stack</span>
+                        <p style="font-size: 0.9rem; color: #334155; line-height: 1.6; margin: 0;">
+                            "Proactive final-year engineering student passionate about developing responsive web applications and REST APIs using HTML5, CSS3, JavaScript, and Flask. Eager to contribute to a collaborative engineering team."
+                        </p>
+                    </div>
+
+                    <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; padding: 16px;">
+                        <span class="badge badge-success" style="margin-bottom: 6px;">Data Analyst</span>
+                        <p style="font-size: 0.9rem; color: #334155; line-height: 1.6; margin: 0;">
+                            "Detail-oriented graduate with strong foundations in SQL query optimization, Python Pandas, and Power BI visualization. Aspiring to derive meaningful business intelligence as a Junior Data Analyst."
+                        </p>
+                    </div>
+
+                    <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; padding: 16px;">
+                        <span class="badge badge-warning" style="margin-bottom: 6px;">Software QA / Testing</span>
+                        <p style="font-size: 0.9rem; color: #334155; line-height: 1.6; margin: 0;">
+                            "Analytical thinker with solid understanding of Software Testing Life Cycle (STLC), test case design, and basic Selenium automation. Seeking a Quality Assurance role to ensure reliable software delivery."
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dos and Don'ts -->
+            <div class="grid-2" style="gap: 24px;">
+                <div class="card" style="border-top: 4px solid var(--success);">
+                    <h4 style="color: #065f46; margin-bottom: 12px;"><i class="fas fa-check-circle"></i> Resume Dos</h4>
+                    <ul style="padding-left: 20px; font-size: 0.92rem; color: #334155; line-height: 1.8;">
+                        <li>Keep your resume strictly to <strong>one single page</strong>.</li>
+                        <li>Include verified GitHub repositories and live demo links.</li>
+                        <li>Use standard fonts and clear bullet points for projects.</li>
+                        <li>Export your resume in <strong>PDF format</strong> before submitting.</li>
+                    </ul>
+                </div>
+
+                <div class="card" style="border-top: 4px solid var(--danger);">
+                    <h4 style="color: #991b1b; margin-bottom: 12px;"><i class="fas fa-times-circle"></i> Resume Don'ts</h4>
+                    <ul style="padding-left: 20px; font-size: 0.92rem; color: #334155; line-height: 1.8;">
+                        <li>Avoid spelling and grammatical errors.</li>
+                        <li>Do not write percentage skill meters or proficiency bars.</li>
+                        <li>Do not include technologies you cannot explain in an interview.</li>
+                        <li>Avoid multi-column tables that can break ATS parsing.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Live Resume Builder -->
+        <div id="builderTab" class="tab-pane" style="display: none;">
+            <div class="grid-2" style="grid-template-columns: 1fr 1.15fr; gap: 32px; align-items: flex-start;">
+                <!-- Builder Form -->
+                <div class="card" style="padding: 24px;">
+                    <h3 style="font-size: 1.25rem; margin-bottom: 18px;"><i class="fas fa-edit text-primary"></i> Fill Details</h3>
+                    <form id="resumeBuilderForm">
+                        <div class="form-group">
+                            <label class="form-label" for="res_fullName">Full Name</label>
+                            <input type="text" id="res_fullName" class="form-control" placeholder="Enter full name" value="{{ session.get('user_name', '') }}">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="res_email">Email</label>
+                                <input type="email" id="res_email" class="form-control" value="{{ session.get('user_email', '') }}" autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="res_phone">Phone</label>
+                                <input type="text" id="res_phone" class="form-control" placeholder="Enter phone number">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="res_degree">Degree</label>
+                                <input type="text" id="res_degree" class="form-control" placeholder="Enter degree program">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="res_graduationYear">Grad Year</label>
+                                <input type="text" id="res_graduationYear" class="form-control" placeholder="Enter graduation year">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="res_college">College / University</label>
+                            <input type="text" id="res_college" class="form-control" placeholder="Enter college or university name">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="res_careerObjective">Career Objective</label>
+                            <textarea id="res_careerObjective" class="form-control form-textarea" rows="3" placeholder="Enter career objective..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="res_skillsList">Technical Skills (comma separated)</label>
+                            <input type="text" id="res_skillsList" class="form-control" placeholder="Enter technical skills separated by commas">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="res_projectsList">Key Project Title & Description</label>
+                            <textarea id="res_projectsList" class="form-control form-textarea" rows="3" placeholder="Enter project title, tech stack, and description..."></textarea>
+                        </div>
+
+                        <button type="button" class="btn btn-primary btn-block" id="printResumeBtn">
+                            <i class="fas fa-print"></i> Print / Save as PDF
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Live A4-Style Resume Preview Sheet -->
+                <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; box-shadow: var(--shadow-card); padding: 32px; min-height: 640px; font-family: 'Inter', sans-serif;" id="resumePreviewSheet">
+                    <div style="text-align: center; border-bottom: 2px solid #0f172a; padding-bottom: 12px; margin-bottom: 16px;">
+                        <h2 id="prev_fullName" style="font-size: 1.75rem; font-weight: 800; color: #0f172a; margin-bottom: 4px;">{{ session.get('user_name', 'Student Name') }}</h2>
+                        <div style="font-size: 0.85rem; color: #475569; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+                            <span id="prev_email"><i class="fas fa-envelope"></i> {{ session.get('user_email', 'student@college.edu') }}</span>
+                            <span id="prev_phone"><i class="fas fa-phone"></i> Phone Number</span>
+                            <span><i class="fab fa-linkedin"></i> LinkedIn Profile</span>
+                            <span><i class="fab fa-github"></i> GitHub Profile</span>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 16px;">
+                        <h4 style="font-size: 0.92rem; font-weight: 700; text-transform: uppercase; color: #1e3a8a; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; margin-bottom: 6px;">
+                            Career Objective
+                        </h4>
+                        <p id="prev_careerObjective" style="font-size: 0.86rem; color: #334155; line-height: 1.5; margin: 0;">
+                            Career objective statement will appear here...
+                        </p>
+                    </div>
+
+                    <div style="margin-bottom: 16px;">
+                        <h4 style="font-size: 0.92rem; font-weight: 700; text-transform: uppercase; color: #1e3a8a; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; margin-bottom: 6px;">
+                            Education
+                        </h4>
+                        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                            <strong id="prev_degree" style="font-size: 0.88rem; color: #0f172a;">Degree Program</strong>
+                            <span id="prev_graduationYear" style="font-size: 0.82rem; color: #64748b; font-weight: 600;">Year of Graduation</span>
+                        </div>
+                        <div id="prev_college" style="font-size: 0.84rem; color: #475569;">College / University Name</div>
+                    </div>
+
+                    <div style="margin-bottom: 16px;">
+                        <h4 style="font-size: 0.92rem; font-weight: 700; text-transform: uppercase; color: #1e3a8a; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; margin-bottom: 6px;">
+                            Technical Skills
+                        </h4>
+                        <p id="prev_skillsList" style="font-size: 0.86rem; color: #334155; line-height: 1.5; margin: 0;">
+                            Technical skills will appear here...
+                        </p>
+                    </div>
+
+                    <div style="margin-bottom: 16px;">
+                        <h4 style="font-size: 0.92rem; font-weight: 700; text-transform: uppercase; color: #1e3a8a; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; margin-bottom: 6px;">
+                            Key Projects
+                        </h4>
+                        <p id="prev_projectsList" style="font-size: 0.86rem; color: #334155; line-height: 1.5; margin: 0;">
+                            Project details and description will appear here...
+                        </p>
+                    </div>
+
+                    <div>
+                        <h4 style="font-size: 0.92rem; font-weight: 700; text-transform: uppercase; color: #1e3a8a; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; margin-bottom: 6px;">
+                            Certifications
+                        </h4>
+                        <ul style="font-size: 0.84rem; color: #334155; padding-left: 18px; line-height: 1.6; margin: 0;">
+                            <li>Python for Everybody - Coursera Certified Specialization</li>
+                            <li>SQL for Relational Databases - HackerRank Certified</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            const target = this.getAttribute('data-tab');
+            document.querySelectorAll('.tab-pane').forEach(p => {
+                p.style.display = (p.id === target) ? 'block' : 'none';
+            });
+        });
+    });
+</script>
+{% endblock %}

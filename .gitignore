@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+*.py[cod]
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+
+# Temporary files
+*.log
+
+# Database backups
+*.sql.bak
+#database files
+*.db 
+*.sqlite3
