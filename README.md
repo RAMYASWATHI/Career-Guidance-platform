@@ -113,7 +113,7 @@ Or configure your `.env` file with your MySQL root password:
 ```ini
 DB_HOST=localhost
 DB_PORT=3306
-DB_USER=root
+DB_USER=your_username
 DB_PASSWORD=your_mysql_password
 DB_NAME=career_guidance_db
 ```
@@ -126,13 +126,8 @@ Open your browser and navigate to:
 **`http://127.0.0.1:5000`**
 
 ---
-
-## 👥 Demo Accounts for Viva / Evaluation
-
-| Role | Email Address | Password |
-|---|---|---|
-| **Student** | `rahul@student.edu` | `Admin@123` |
-| **Admin** | `admin@careerguidance.com` | `Admin@123` |
+## Demo Access
+Demo login credentials are provided seperately for authorized evaluators.
 
 ---
 *Created as a B.Tech Computer Science Capstone Project.*
